@@ -1,0 +1,14 @@
+{
+  "name": "sudoku-chess",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently --kill-others \" yarn client\" \"yarn server\" ",
+    "client": "cd client && yarn start",
+    "server": "cd server && nodemon index.ts"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
