@@ -91,6 +91,8 @@ const funcs = {
     return !set.has(value);
   },
 
+  // "sort through indexes" and get if any of those cells have only 1 possible value
+  // right now this is "sorting through sets" to see if any sets have only 1 possible value
   _hasOne: ( func: getSet, index: number, n: number, arr: number[] ): AutoComplete | false => {
     let f = (e: number) => {return arr[e]};
     let indexes = func(index, n);
