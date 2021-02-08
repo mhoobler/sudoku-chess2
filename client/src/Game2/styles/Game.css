@@ -1,0 +1,8 @@
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 60vh;
+  height: 60vh;
+  margin: 0 auto;
+}

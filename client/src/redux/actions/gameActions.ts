@@ -20,3 +20,10 @@ export const setFocus = (num: number) => ({
     focus: num
   }
 })
+
+export const setTurnArr = (ta: Turn[]) => ({
+  type: 'SET_TURNS',
+  payload: {
+    turnArr: ta
+  }
+})

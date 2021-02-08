@@ -36,6 +36,17 @@ const reducer = (state = initialState, action: any) => {
       }
     }
 
+    case('SET_TURNS'): {
+      const {turnArr} = action.payload;
+      return{
+        ...state,
+        board: {
+          ...state.board,
+          turnArr
+        }
+      }
+    }
+
     default: {
       return {...state};
     }

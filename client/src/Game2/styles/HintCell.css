@@ -1,0 +1,12 @@
+.hint-cell-3 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.hint-cell-3 > *{
+ width: 33.33%;
+ height: 33.33%;
+}

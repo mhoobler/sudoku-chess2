@@ -1,3 +1,14 @@
 .menu-container{
   width: 60%;
+  margin: 0 auto;
+}
+
+.menu-header h1 {
+  font-size: 72px;
+  font-family: 'Comfortaa', cursive;
+}
+
+.menu-header h4 {
+  font-size: 36px;
+  font-family: 'Comfortaa', cursive;
 }

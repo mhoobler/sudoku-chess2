@@ -54,7 +54,7 @@ class SocketHandler {
 
       })
 
-      socket.on('ADD_TURN', async (message: any) => {
+      socket.on('ADD_TURN', async (message: any, callback: any) => {
         console.log(message);
 
         try{

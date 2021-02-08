@@ -22,7 +22,8 @@ const Game: React.FC<Props> = (P) => {
 
   useEffect( () => {
     console.log(grid.score);
-    let turnArr = allButTwo(grid.N, grid.board._id)
+    // let turnArr = allButTwo(grid.N, grid.board._id);
+    let turnArr: Turn[] = [];
 
     P.conn.on('UPDATE_TURN', (message: any) => {
       console.log('TESTSETST');

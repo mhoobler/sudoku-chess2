@@ -14,8 +14,10 @@ import Home from './pages/Home';
 import CreateGame from './pages/CreateGame';
 import JoinGame from './pages/JoinGame';
 import Game from './pages/Game';
+//Test Game
+import Game2 from './Game2/Game';
 
-//Actions
+import GameFuncs from './Game2/GameFuncs';
 
 import './App.css';
 
@@ -24,8 +26,61 @@ interface Props {
   board: Board
 }
 
-// Add auto-complete
-// Add "player turn" restriction
+const TurnA: Turn[] = [
+  {
+    gameID: '',
+    player: 1,
+    value: 1,
+    index: 0
+  },
+  {
+    gameID: '',
+    player: 2,
+    value: 2,
+    index: 1
+  },
+  {
+    gameID: '',
+    player: 1,
+    value: 3,
+    index: 2
+  },
+  {
+    gameID: '',
+    player: 2,
+    value: 4,
+    index: 3
+  },
+  {
+    gameID: '',
+    player: 1,
+    value: 1,
+    index: 0
+  },
+  {
+    gameID: '',
+    player: 2,
+    value: 2,
+    index: 1
+  },
+  {
+    gameID: '',
+    player: 1,
+    value: 3,
+    index: 2
+  },
+  {
+    gameID: '',
+    player: 2,
+    value: 4,
+    index: 3
+  },
+  
+]
+
+const initArr = GameFuncs.initGrid(TurnA, 4);
+const set = GameFuncs.getSet1(3, initArr.values, 4);
+console.log(set);
 
 const App: React.FC<Props> = (P) => {
   const history = useHistory();
@@ -48,7 +103,7 @@ const App: React.FC<Props> = (P) => {
       <Switch>
 
         <Route path='/game'>
-          <Game board={P.board} conn={P.conn}/>
+          <Game2 board={P.board} conn={P.conn}/>
         </Route>
       
         <Route path='/create'>

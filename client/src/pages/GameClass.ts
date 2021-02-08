@@ -61,28 +61,28 @@ class GameClass {
 
     this.hints = Array(this.N * this.N)
       .fill( Array(this.N).fill(false) );
-      console.log(this.hints);
+      // console.log(this.hints);
 
     // Test turns
     // this.board.turnArr = allButTwo(this.N, this.board._id);
 
     for(let t of b.turnArr){
       console.log(t);
-      let score = 1;
+      let score = {...this.score}[t.player];
 
       cells[t.index].value = t.value;
       cells[t.index].player = t.player;
       
-      let autos = this.autoComplete(cells[t.index], t.player);
-      for(let a of autos){
-        cells[a.index] = a;
-        score++;
-      }
+      // let autos = this.autoComplete(cells[t.index], t.player);
+      // for(let a of autos){
+      //   cells[a.index] = a;
+      //   score++;
+      // }
 
       this.score[t.player] = score;
     };
 
-    console.log(cells);
+    // console.log(cells);
     this.cells = [...cells];
 
   }
@@ -157,11 +157,14 @@ class GameClass {
     let row = this.getRow(cell.row).map( (e: GridCell) => {return e.value} );
     let col = this.getColumn(cell.column).map ( (e: GridCell) => {return e.value} );
     let box = this.getBox(cell.box).map( (e: GridCell) => {return e.value} );
+    let all = row.concat(col).concat(box);
+    let set = Array.from(new Set(all));
+    console.log(set);
 
     for(let i=0; i<this.N; i++){
-      vals[ row[i] ] = true;
-      vals[ col[i] ] = true;
-      vals[ box[i] ] = true;
+      if(set[i] !== 0) {
+        vals[ set[i] ] = true;
+      }
     }
     // console.log(vals);
 

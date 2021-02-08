@@ -4,8 +4,10 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others \" yarn client\" \"yarn server\" ",
+    "start": "concurrently --kill-others \"yarn client\" \"yarn server\" ",
+    "build": "concurrently --kill-others \"yarn build-client\" \"yarn server\" ",
     "client": "cd client && yarn start",
+    "build-client": "cd client && yarn build",
     "server": "cd server && nodemon index.ts"
   },
   "devDependencies": {

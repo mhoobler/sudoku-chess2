@@ -41,12 +41,13 @@ const InputCell: React.FC<Props> = (P) => {
 }
 
 const GameCell: React.FC<Props> = (P) => {
+  console.log('test');
 
   useEffect( () => {}, [] );
-
+  // onClick={() => P.setFocus(P.cell.index)}
   return (
     <div className={`grid-cell grid-cell-size-${P.grid.n} player-${P.cell.player}`}
-    onClick={() => P.setFocus(P.cell.index)}
+    onClick={() => {P.setFocus(P.cell.index)}}
     >
       {
       P.focus === P.cell.index ? <InputCell {...P}/> 

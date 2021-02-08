@@ -20,9 +20,12 @@ const CreateGame: React.FC<Props> = (P) => {
   return (
     <div className='menu-container'>
 
-      <h1> Create Game </h1>
+      <div className='menu-header'>
+        <h1> Create Game </h1>
 
-      <h4> Select Board Size</h4>
+        <h4> Select Board Size </h4>
+      </div>
+
 
       <MenuButton
       action={() => handleCreate(81)}

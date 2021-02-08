@@ -33,6 +33,11 @@
   flex-direction: row;
 }
 
+.grid-cell {
+  background-color: white;
+  font-weight: bold;
+}
+
 .hint-size-3 {
   width: 33%;
   font-size: 16px;

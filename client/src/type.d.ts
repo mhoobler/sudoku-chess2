@@ -16,6 +16,11 @@ type Turn = {
   value: number
 }
 
+type AutoComplete = {
+  index: number,
+  value: number
+}
+
 type GridCell = {
   column: number,
   row: number,
