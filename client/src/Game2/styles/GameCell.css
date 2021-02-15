@@ -9,7 +9,25 @@
   height: 11.11%;
 }
 
+.cell-size-3{
+  width: 11.11%;
+  height: 11.11%;
+}
+
+.cell-size-4{
+  width: 6.25%;
+  height: 6.25%;
+}
+
 .grid-cell > * {
   width: 100%;
   height: 100%;
+}
+
+.player-1 {
+  background-color: #AAAAFF;
+}
+
+.player-2 {
+  background-color: #FAA;
 }

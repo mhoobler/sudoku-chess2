@@ -1,7 +1,8 @@
-type getSet = (i: number, n: number) => number[]
+type getIndexes = (i: number, n: number) => number[]
 
 const funcs = {
   initGrid: (ta: Turn[], n: number) => {
+    // console.clear();
     console.time('init');
     let N = n*n;
     let values = new Array(N*N).fill(0);
@@ -9,7 +10,6 @@ const funcs = {
 
     /**************************
     The order here is important
-    could change it in the future
     ***************************/
     for(let i=0; i<ta.length; i++){
       let turn = ta[i]
@@ -18,12 +18,17 @@ const funcs = {
       players[turn.index] = turn.player;
 
       // Then get auto completes
-      let x = funcs.autoComplete(turn.index, values, n);
-      // console.log(x);
-      for(let a of x){
-        values[a.index] = a.value;
-        players[a.index] = turn.player;
+      let autos = funcs.autoComplete(turn.index, values, 3);
+      console.log(autos);
+      if(autos){
+        for(let a of autos){
+          if(a.value !== 0){
+            values[a.index] = a.value;
+            players[a.index] = turn.player;
+          }
+        }
       }
+
     }
 
     console.timeEnd('init');
@@ -69,8 +74,8 @@ const funcs = {
     return boxIndexes;
   },
 
-  getSet1: (index: number, arr: number[], n: number) => {
-    // console.time('getSet1');
+  getGroupSet: (index: number, arr: number[], n: number) => {
+    // console.time('getGroupSet');
 
     let indexes = funcs.getBox(index, n)
       .concat(funcs.getCol(index, n))
@@ -81,62 +86,82 @@ const funcs = {
 
     let set = new Set(all);
 
-    // console.timeEnd('getSet1');
+    // console.timeEnd('getGroupSet');
     return set
   },
 
   testInput: (index: number, arr: number[], n: number, value: number) => {
-    let set = funcs.getSet1(index, arr, n);
+    let set = funcs.getGroupSet(index, arr, n);
 
-    return !set.has(value);
-  },
+    if(set.has(value)){
+      let indexes = Array.from(
+        new Set( [
+          funcs.getRow(index, n),
+          funcs.getCol(index, n),
+          funcs.getBox(index, n)
+        ].flat() )
+      );
 
-  // "sort through indexes" and get if any of those cells have only 1 possible value
-  // right now this is "sorting through sets" to see if any sets have only 1 possible value
-  _hasOne: ( func: getSet, index: number, n: number, arr: number[] ): AutoComplete | false => {
-    let f = (e: number) => {return arr[e]};
-    let indexes = func(index, n);
-    let set = new Set(indexes.map(f));
-    set.delete(0);
-    
-    if(set.size === n*n-1){
-      let setArr = Array.from(set);
-      let bools = Array(n*n).fill(false);
-      let needsVal = 0;
-      let ind = 0;
-
-      setArr.forEach( (e) => bools[e-1] = true);
-      bools.forEach( (e, i) => { if(!e) needsVal = i+1 });
-      indexes.forEach( (e) => { if(arr[e] === 0) ind = e });
-      // console.log(bools);
-
-      return {value: needsVal, index: ind}
-    } else {
-      return false;
+      return indexes.filter( (e: number) => (arr[e] === value) )
+    }
+    else {
+      return true;
     }
   },
 
   // Make this recursive
   // Computer with "primary" digits instead of binary digits
   // 0000 = 0, 0110 = 5*3 0110 = 4+2
-  autoComplete: (index: number, arr: number[], n: number): any => {
-    let funcArr = [funcs.getBox, funcs.getCol, funcs.getRow];
-    let autoVals = funcArr.map( (e: getSet) => {
-      return funcs._hasOne(e, index, n, arr);
-    })
-    .filter( (e) => (e !== false) );
-    let newArr = [...arr];    
+  autoComplete: (index: number, arr: number[], n: number, autoArr: AutoComplete[] = []): any => {
+    
+    let indexes = new Set( [
+      funcs.getRow(index, n),
+      funcs.getCol(index, n),
+      funcs.getBox(index, n)
+    ].flat() )
 
-    let hasMore = autoVals.map( (e) => {
-      if(e !== false){
-        newArr[e.index] = e.value;
-        let x = funcs.autoComplete(e.index, newArr, e.value);
-        // console.log(x);
-        return x;
-      }
-    });
+    let found = Array.from(indexes).map( (e: any) => {
+      return {
+        set: funcs.getGroupSet(e, arr, n),
+        index: e
+      };
+    }).filter( (e) => e.set.size === n*n && arr[e.index] === 0);
+    console.log(found);
 
-    return autoVals.concat(hasMore).flat();
+    if(found.length > 0){
+
+      let newArr = [...arr];
+
+      let autos = found.map( (e) => {
+        e.set.delete(0);
+        let setArr = Array.from(e.set);
+        let boolArr = Array(n*n).fill(false);
+
+        for(let i=0; i<setArr.length; i++){
+          boolArr[ setArr[i]-1 ] = true;
+        }
+
+        let auto = {
+          index: e.index,
+          value: boolArr.findIndex( (b: boolean) => (!b) ) + 1
+        }
+
+        newArr[auto.index] = auto.value;
+        found.forEach( e => e.set.add(auto.value) )
+
+        return auto;
+      })
+
+      console.log(autos);
+      let bigChungus = autos.map( (e) => {
+        return funcs.autoComplete(e.index, newArr, n, [...autoArr, e]);
+      });
+      let bigSet = new Set(autos.concat(bigChungus).flat())
+      return Array.from(bigSet);
+    } else {
+      return autoArr;
+    }
+
   }
 } 
 

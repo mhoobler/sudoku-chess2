@@ -44,7 +44,7 @@ const GameCell: React.FC<Props> = (P) => {
   // console.log('test');
   return (
     <div 
-    className={`grid-cell cell-size-${P.n}`}
+    className={`grid-cell cell-size-${P.n} player-${P.player}`}
     onClick={() => P.setFocus(P.index)}>
 
       {P.isFocused ? 

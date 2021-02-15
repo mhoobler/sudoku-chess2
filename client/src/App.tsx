@@ -13,11 +13,11 @@ import {connect} from 'react-redux';
 import Home from './pages/Home';
 import CreateGame from './pages/CreateGame';
 import JoinGame from './pages/JoinGame';
-import Game from './pages/Game';
+import Game from '../../trash/Game';
 //Test Game
 import Game2 from './Game2/Game';
 
-import GameFuncs from './Game2/GameFuncs';
+// import GameFuncs from './Game2/GameFuncs';
 
 import './App.css';
 
@@ -25,62 +25,6 @@ interface Props {
   conn: typeof Socket,
   board: Board
 }
-
-const TurnA: Turn[] = [
-  {
-    gameID: '',
-    player: 1,
-    value: 1,
-    index: 0
-  },
-  {
-    gameID: '',
-    player: 2,
-    value: 2,
-    index: 1
-  },
-  {
-    gameID: '',
-    player: 1,
-    value: 3,
-    index: 2
-  },
-  {
-    gameID: '',
-    player: 2,
-    value: 4,
-    index: 3
-  },
-  {
-    gameID: '',
-    player: 1,
-    value: 1,
-    index: 0
-  },
-  {
-    gameID: '',
-    player: 2,
-    value: 2,
-    index: 1
-  },
-  {
-    gameID: '',
-    player: 1,
-    value: 3,
-    index: 2
-  },
-  {
-    gameID: '',
-    player: 2,
-    value: 4,
-    index: 3
-  },
-  
-]
-
-const initArr = GameFuncs.initGrid(TurnA, 4);
-const set = GameFuncs.getSet1(3, initArr.values, 4);
-console.log(set);
 
 const App: React.FC<Props> = (P) => {
   const history = useHistory();
@@ -92,7 +36,7 @@ const App: React.FC<Props> = (P) => {
     //   console.log(message);
     // })
 
-    if(P.board !== null){
+    if(P.board !== null && history.location.pathname !== '/game'){
       console.log(P.board);
       history.push('/game');
     }

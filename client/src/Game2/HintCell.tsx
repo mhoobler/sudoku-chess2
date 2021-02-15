@@ -13,7 +13,7 @@ type Props = {
 const HintCell: React.FC<Props> = (P) => {
   // console.log('HINT: ' + P.index);
 
-  const set = Array.from(GameFuncs.getSet1(P.index, P.values, P.n));
+  const set = Array.from(GameFuncs.getGroupSet(P.index, P.values, P.n));
   let arr = Array(P.n * P.n).fill(false);
   
   for(let x of set){
@@ -25,7 +25,7 @@ const HintCell: React.FC<Props> = (P) => {
   // console.log(arr);
 
   return(
-    <div className={`hint-cell-${P.n}`}>
+    <div className={`hint-cell hint-cell-${P.n}`}>
       {arr.map( (e: boolean, i: number) => {
         return e ? <div key={i}>{i+1}</div> : <div key={i}>{'\xa0'}</div>
       })}

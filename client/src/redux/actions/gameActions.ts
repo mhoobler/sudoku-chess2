@@ -1,7 +1,8 @@
-export const setBoard = (b: Board) => ({
+export const setBoard = (b: Board, p: 1 | 2) => ({
   type: 'SET_BOARD',
   payload: {
-    board: b
+    board: b,
+    isPlayer: p
   }
 })
 

@@ -2,29 +2,27 @@
 type iS = {
   board: Board | null,
   target: number,
-  hintsStyle: 'default' | 'inverse',
+  hintStyle: 'default' | 'inverse',
   focus: number,
-  score: {
-    1: number,
-    2: number
-  }
+  isPlayer: undefined | 1 | 2
 }
 
 const initialState: iS = {
   board: null,
   target: 0,
-  hintsStyle: 'default',
+  hintStyle: 'default',
   focus: 0,
-  score: {1: 0, 2: 0}
+  isPlayer: undefined
 }
 
 const reducer = (state = initialState, action: any) => {
   switch(action.type){
     case('SET_BOARD'): {
-      const {board} = action.payload;
+      const {board, isPlayer} = action.payload;
       return {
         ...state,
-        board: board
+        board: board,
+        isPlayer: isPlayer
       };
     }
 
