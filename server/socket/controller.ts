@@ -1,17 +1,22 @@
-import * as C from './lib';
+import * as Lib from './lib';
 
 import db from '../models';
 
-const Controller = async (action: C.Action ) => {
+// This function handles any actions taken on the DB
+const Controller = async (action: Lib.Action ) => {
   console.log(action.type);
 
   switch(action.type) {
     case('GET_BOARD'): {
       try
       {
-        if(!action.payload.id){
-          let x = await db.Game.Board.find({});
-          console.log(x);
+        if(!action.payload._id){
+          let board: Lib.Board = await db.Game.Board.find({});
+          console.log(board);
+          return board;
+        } else {
+          let board: Lib.Board = await db.Game.Board.findOne({_id: action.payload._id});
+          return board;
         }
       }
       catch(err) { console.log(err); };
@@ -22,9 +27,9 @@ const Controller = async (action: C.Action ) => {
       try
       {
         console.log(action.payload);
-        let x = await db.Game.Board.create(action.payload)
+        let board: any = await db.Game.Board.create(action.payload)
 
-        return x;
+        return board;
       }
       catch(err) { console.log(err); }
       break;
@@ -39,13 +44,13 @@ const Controller = async (action: C.Action ) => {
       {
         console.log(action.payload);
         const turn = action.payload;
-        let x = await db.Game.Board.findOneAndUpdate(
+        let board: Lib.Board = await db.Game.Board.findOneAndUpdate(
         {_id: turn.gameID},
         { $push: { turnArr: turn } },
         {new: true}
         );
 
-        return x;
+        return board;
       }
       catch(err) { console.log(err); };
       break;

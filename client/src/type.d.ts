@@ -33,3 +33,8 @@ type GridCell = {
 type GridRow = GridCell[]
 
 type GridMatrix = GridRow[]
+
+type GameErrors = {
+  types: string[],
+  cells: number[]
+}

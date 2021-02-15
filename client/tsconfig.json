@@ -22,5 +22,5 @@
   },
   "include": [
     "src/**/*"
-  ]
+, "../trash/Game.tsx", "../trash/GameRow.tsx", "../trash/GameCell.tsx", "../trash/HintsCell.tsx"  ]
 }

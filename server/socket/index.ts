@@ -1,30 +1,24 @@
 import {Server as ioServer, Socket} from 'socket.io';
 import {Server as httpServer} from 'http';
 import Controller from './controller';
-import Board from '../models/Game/Board'
+
+import * as Lib from './lib';
+
+type Callback = <T>(t: T) => void;
 
 class SocketHandler {
   io: ioServer;
-  roomByPlayer: {
-    [key: string]: string
-  } = {};
-  playersByRoom: {
-    [key: string]: [string]
-  } = {};
-
+  rooms: {
+    [key: string]: string[]
+  } = {}
   constructor(http: httpServer){
     this.io = new ioServer(http);
 
     this.io.on('connection', (socket: Socket) => {
       const id: string = socket.client.conn.id;
-      console.log(id);
 
-      socket.on('GET_BOARD', async (message: any) => {
-        Controller({type: 'GET_BOARD', payload: message});
-      });
-
-      socket.on('NEW_GAME', async (message: any, callback: any) => {
-        //Create Game & Board
+      // Initialize new Board and socket room
+      socket.on('NEW_GAME', async (message: {size: 81 | 256}, callback: Callback) => {
         let board: NewBoard = {
           playerCreate: 'test',
           size: message.size,
@@ -33,38 +27,61 @@ class SocketHandler {
         try{
 
           let x = await Controller({type: 'POST_BOARD', payload: board});
-        
-          //Create room
           
           callback(x);
 
-          this.roomByPlayer[id] = x._id;
-          this.playersByRoom[x._id] = [id];
-          socket.join(x._id);
+          socket.join( String(x._id) );
+          this.rooms[ String(x._id) ] = [id];
 
         } catch(err) {console.log(err)}
       });
 
-      socket.on('GET_GAMES', async (message: any, callback: any) => {
-        console.log(Object.keys(this.playersByRoom));
-        callback( Object.keys(this.playersByRoom) );
-      })
+      // Return initalized Boards with less than 2 players
+      socket.on('GET_GAMES', async (message: null, callback: Callback) => {
+        let notFull = Object.keys(this.rooms).filter( (e: string) => (
+          this.rooms[e].length !== 2
+        ))
+        
+        callback( notFull );
+      });
 
-      socket.on('JOIN_GAME', async (message: any, callback: any) => {
+      // Return selected Board by _id and join socket room
+      socket.on('JOIN_GAME', async (message: {_id: string}, callback: Callback) => {
 
-      })
+        try{
+          let x = await Controller({type: 'GET_BOARD', payload: message});
 
-      socket.on('ADD_TURN', async (message: any, callback: any) => {
-        console.log(message);
+          callback(x);
+
+          socket.join( String(x._id) );
+          this.rooms[ String(x._id) ].push(id)
+
+          socket.to( String(message._id) ).emit('PLAYER_JOIN', {});
+        } catch(err) {console.log(err)}
+      });
+
+      // Accept any turn and return updated Board
+      socket.on('ADD_TURN', async (message: any) => {
 
         try{
           let x = await Controller({type: 'ADD_TURN', payload: message});
-        
-          // console.log(x);
-          console.log(this.roomByPlayer[id]);
-          this.io.in(this.roomByPlayer[id]).emit('UPDATE_TURN', {turnArr: x.turnArr});
+
+          this.io.in( String(x._id) ).emit('UPDATE_TURN', {turnArr: x.turnArr});
 
         } catch(err) {console.log(err)}
+
+      });
+
+      // Remove empty rooms and handle in-game disconnect issues
+      socket.on('disconnect', () => {
+        let roomSet = new Set(this.io.sockets.adapter.rooms.keys());
+        
+        Object.keys(this.rooms).forEach( (e: string) => {
+          this.io.in(e).emit('USER_QUIT', {})
+          if(!roomSet.has(e)){
+            delete this.rooms[e]
+          }
+        });
 
       })
     })
