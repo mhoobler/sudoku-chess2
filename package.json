@@ -8,7 +8,7 @@
     "build": "concurrently --kill-others \"yarn build-client\" \"yarn server\" ",
     "client": "cd client && yarn start",
     "prod-client": "cd client && yarn build",
-    "server": "cd server && nodemon index.ts",
+    "server": "cd server && nodemon index.ts"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
