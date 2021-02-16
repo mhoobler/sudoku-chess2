@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/sudoku-chess2",
 .catch( err => console.log(err) );
 
 // Middleware
-app.use( parser.json({ limit: '50mb' }) )
+app.use( parser.json() )
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -34,15 +34,6 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
   // client/public is the actual folder to use for static files
 }
-
-// You really only need API routes and not any HTML routes if you are using REACTJS as the frontend
-// ******************************API ROUTES INCLUDED HERE***************************** //
-app.get("/_api/non-cached", (req, res) => {
-    res.json({ random: Math.random() });
-});
-app.get("/api/cached", (req, res) => {
-    res.json({ random: Math.random() });
-});
 
 // Send every request to the React app
 // Define any API routes before this runs

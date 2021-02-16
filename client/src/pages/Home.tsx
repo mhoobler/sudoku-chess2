@@ -22,11 +22,7 @@ const Home: React.FC = () => {
       action={'/join'}
       text={'Join Game'}
       />
-
-      <MenuButton
-      action={'/join'}
-      text={'Test'}
-      />
+      
     </div>
   )
 }
