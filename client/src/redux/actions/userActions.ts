@@ -2,7 +2,7 @@ import {setBoard} from './gameActions';
 
 export const newGame = (num: 81 | 256) => {
   return (dispatch: any, getState: () => any) => {
-    const {conn} = getState().test;
+    const {conn} = getState().user;
     console.log(conn);
 
 
@@ -18,7 +18,7 @@ export const newGame = (num: 81 | 256) => {
 
 export const joinGame = (_id: string) => {
   return (dispatch: any, getState: () => any ) => {
-    const {conn} = getState().test;
+    const {conn} = getState().user;
 
     conn.emit('JOIN_GAME', {_id}, //CallBack
       async (message: Board) => {

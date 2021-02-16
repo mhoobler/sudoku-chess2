@@ -38,7 +38,7 @@ const JoinGame: React.FC<Props> = (P) => {
 
 const mapStateToProps = (state: any) => {
   return {
-    conn: state.test.conn
+    conn: state.user.conn
   }
 }
 

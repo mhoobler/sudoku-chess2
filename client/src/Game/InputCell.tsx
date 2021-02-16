@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import './styles/GameCell.css';
 
 type Props = {
   player: number
   value: number
   index: number
   n: number
-  handleTurn: (i: number, v: number) => boolean
+  handleTurn: (i: number, v: number) => void
 }
 
 const InputCell: React.FC<Props> = (P) => {
   const [value, setValue] = useState<number>(P.value);
 
-  const remove = (el: any) => {
-    el.removeEventListener('keyup', test);
-  }
+  /**************************************************
+  A lot of these commented lines were trying to fix a bug
+  The bug is that the keyup event fires twice,
+  can't seem to fix it and things seem to currently work so leaving it as is for now
+  **************************************************/
+  // const remove = (el: any) => {
+  //   el.removeEventListener('keyup', test);
+  // }
 
   const test = (evt: any) => {
-    console.log(evt);
+    // console.log(evt);
     if( (evt as unknown as KeyboardEvent).key === 'Enter') {
-      console.log(value);
-      let x = P.handleTurn(P.index, value);
-      if(x) { remove(evt.currentTarget) };
-      evt.Handled = true;
+      // console.log(value);
+      P.handleTurn(P.index, value);
+      // x = P.handleTurn(P.index, value)
+      // if(x) { remove(evt.currentTarget) };
+      // evt.Handled = true;
     }
   }
 
@@ -34,6 +39,7 @@ const InputCell: React.FC<Props> = (P) => {
 
   }, [value])
 
+  // The weird stuff going on in value is to fix leading-zeroes
   return (
     <input
     className={`input-cell ${P.value === 0 ? 'infocus' : 'nofocus'}`}
@@ -44,7 +50,6 @@ const InputCell: React.FC<Props> = (P) => {
     onChange={ 
       (evt) => {
         let val = parseInt(evt.currentTarget.value);
-        console.log(val);
         setValue(val);
       }
     }

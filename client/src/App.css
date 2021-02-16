@@ -2,10 +2,12 @@
   --dark-shade: #551100;
   --hover: #CC9988;
   --light-shade: #996655;
-  --border-text: #000000
+  --border-text: #000000;
+  --player-1: #AAF;
+  --player-2: #FAA;
 }
 
-* {
+*, h1, h2, h3, h4 {
   font-family: 'Comfortaa', cursive;
 }
 

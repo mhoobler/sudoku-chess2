@@ -10,7 +10,6 @@ type Props = {
 
 const MenuButton: React.FC<Props> = (P) => {
 
-
   if(typeof P.action === 'string'){
 
     return (

@@ -1,9 +1,15 @@
 type getIndexes = (i: number, n: number) => number[]
 
+/* 
+Oh boi I get to explain this nightmare and you get to read it.
+This file infers what the *Grid* state is base on the *Turns*
+inside the *Board* that delivered by the socket server.
+*/
+
 const funcs = {
+  // This is the heart of this whole operation
+  // it creates the two arrays that will be used to help render the Grid's Cells
   initGrid: (ta: Turn[], n: number) => {
-    // console.clear();
-    console.time('init');
     let N = n*n;
     let values = new Array(N*N).fill(0);
     let players = new Array(N*N).fill(0);
@@ -31,13 +37,15 @@ const funcs = {
 
     }
 
-    console.timeEnd('init');
     return {values, players}
   },
   
+  // The next three functions help calculate how the Sudoku grid should be organized
+  // They only return INDEXES that are meant to point to one of the arrays from initGrid 
+  // They do NOT return actual values from said arrays
   getRow: (index: number, n: number) => {
     let N = n*n;
-    let ri = Math.floor(index / N) * N;
+    let ri = ~~(index / N) * N;
     let rowIndexes: number[] = Array.from( Array(N).keys() ).map( (e: number) => {
       return ri+e;
     });
@@ -58,8 +66,8 @@ const funcs = {
   
   getBox: (index: number, n: number) => {
     let N = n*n;
-    let rstart = Math.floor( index / (N * n));
-    let cstart = Math.floor( (index % N) / n);
+    let rstart = ~~( index / (N * n));
+    let cstart = ~~( (index % N) / n);
     let start = (rstart * N * n) + (cstart * n);
     // console.log(start);
   
@@ -74,6 +82,8 @@ const funcs = {
     return boxIndexes;
   },
 
+  // This DOES return values, but inside of a set
+  // This is particularly useful for displaying Hints
   getGroupSet: (index: number, arr: number[], n: number) => {
     // console.time('getGroupSet');
 
@@ -90,28 +100,35 @@ const funcs = {
     return set
   },
 
+  // Pretty simple, tests user input;
   testInput: (index: number, arr: number[], n: number, value: number) => {
     let set = funcs.getGroupSet(index, arr, n);
 
-    if(set.has(value)){
-      let indexes = Array.from(
-        new Set( [
-          funcs.getRow(index, n),
-          funcs.getCol(index, n),
-          funcs.getBox(index, n)
-        ].flat() )
-      );
+    if(value > 0 && value <= n*n){
 
-      return indexes.filter( (e: number) => (arr[e] === value) )
+      if(set.has(value)){
+        let indexes = Array.from(
+          new Set( [
+            funcs.getRow(index, n),
+            funcs.getCol(index, n),
+            funcs.getBox(index, n)
+          ].flat() )
+        );
+  
+        return indexes.filter( (e: number) => (arr[e] === value) )
+      }
+      else {
+        return true;
+      }
     }
+    
     else {
-      return true;
+      return false;
     }
+
   },
 
-  // Make this recursive
-  // Computer with "primary" digits instead of binary digits
-  // 0000 = 0, 0110 = 5*3 0110 = 4+2
+  // I'm sorry I almost completely forgot how this works
   autoComplete: (index: number, arr: number[], n: number, autoArr: AutoComplete[] = []): any => {
     
     let indexes = new Set( [
@@ -152,13 +169,18 @@ const funcs = {
         return auto;
       })
 
-      console.log(autos);
-      let bigChungus = autos.map( (e) => {
+      // check if autocompleted cell will cause more autocompletes
+      let recusive = autos.map( (e) => {
         return funcs.autoComplete(e.index, newArr, n, [...autoArr, e]);
       });
-      let bigSet = new Set(autos.concat(bigChungus).flat())
+      
+      // let bigSet = new Set(autos.concat(recusive).flat());
+      let bigSet = autos.concat(recusive).flat();
+      console.log(bigSet);
       return Array.from(bigSet);
     } else {
+
+      // if no autocompletes were found, return what we got (or empty array)
       return autoArr;
     }
 

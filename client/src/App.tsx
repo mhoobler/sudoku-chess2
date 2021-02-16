@@ -15,7 +15,7 @@ import CreateGame from './pages/CreateGame';
 import JoinGame from './pages/JoinGame';
 import Game from '../../trash/Game';
 //Test Game
-import Game2 from './Game2/Game';
+import Game2 from './Game/Game';
 
 // import GameFuncs from './Game2/GameFuncs';
 
@@ -30,14 +30,7 @@ const App: React.FC<Props> = (P) => {
   const history = useHistory();
 
   useEffect( () => {
-    console.log(P.conn);
-
-    // P.conn.on('TEST_ROOM', (message: any) => {
-    //   console.log(message);
-    // })
-
     if(P.board !== null && history.location.pathname !== '/game'){
-      console.log(P.board);
       history.push('/game');
     }
   }, [P.board])
@@ -70,7 +63,7 @@ const App: React.FC<Props> = (P) => {
 
 const mapStateToProps = (state: any) => {
   return {
-    conn: state.test.conn,
+    conn: state.user.conn,
     board: state.game.board
   }
 }

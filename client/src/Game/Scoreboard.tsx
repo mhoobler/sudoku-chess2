@@ -1,13 +1,21 @@
 import React from 'react';
 
+import Scorecard from './Scorecard';
+
+import './styles/Scoreboard.css';
+
 type Props = {
   players: number[]
   errors: GameErrors
+  isTurn: 1 | 2
+  isPlayer: 1 | 2
 }
 
 const ScoreBoard: React.FC<Props> = (P) => {
 
   const sum = (acc: number, curr: number) => ( acc + curr );
+
+  // Error.types is an array of strings which contains what errors need to be displayed
   const handleErrors = (e: string, i: number) => {
     switch(e){
       case('BAD_INPUT'): {
@@ -34,7 +42,7 @@ const ScoreBoard: React.FC<Props> = (P) => {
           </div>
         )
       }
-      case('NEG_NUM'): {
+      case('ZERO_NUM'): {
         return (
           <div key={i} className='error'>
             Number must be greater than 0
@@ -52,11 +60,22 @@ const ScoreBoard: React.FC<Props> = (P) => {
   }
 
   return (
-    <div className='game-sidebar'>
-      <h4>Score</h4>
-      <div>Player 1: {P.players.filter( (e) => e === 1).reduce(sum, 0)}</div>
-      <div>Player 2: {P.players.filter( (e) => e === 2).reduce(sum, 0)/2}</div>
-
+    <div className='game-sidebar-left'>
+      <h2>Score</h2>
+      {/* Just add all the '1's inside of the player array to get score*/}
+      <Scorecard 
+      isTurn={P.isTurn === 1}
+      isPlayer={P.isPlayer}
+      label={1}
+      sum={P.players.filter( (e) => e === 1).reduce(sum, 0)}
+      />
+      {/* Add all the '2's inside the player array and divide to get score */}
+      <Scorecard 
+      isTurn={P.isTurn === 2}
+      isPlayer={P.isPlayer}
+      label={2}
+      sum={P.players.filter( (e) => e === 2).reduce(sum, 0)/2}
+      />
       {
         P.errors.types.map( (e: string, i) => (handleErrors(e, i)) )
       }

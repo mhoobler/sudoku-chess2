@@ -26,19 +26,26 @@ type Props = {
 }
 
 const Game: React.FC<Props> = (P) => {
-  // console.clear();
+  
+  // This n value is very important, 
+  // helps determine things like the size of grid and grid coordinates
   const n = Math.sqrt(Math.sqrt(P.board.size));
-  console.log(P.isPlayer);
 
+  // These two arrays help render the GameGrid and keep score
   const [gameState, setGameState] = useState<GameState>(
     { 
       values: Array(P.board.size).fill(0),
       players: Array(P.board.size).fill(0)
     }
   );
+
+  // States to store errors and to help with listeners
   const [errors, setErrors] = useState<GameErrors>({types: [], cells: []});
   const [hasJoined, setHasJoined] = useState(P.isPlayer === 2 ? true : false);
   const [hasQuit, setHasQuit] = useState(false);
+  // Determine player turn
+  const turnArr = P.board.turnArr, len = turnArr.length; 
+  const isTurn = len > 0 ? (turnArr[len - 1].player === 1 ? 2 : 1) : 1;
 
   useEffect( () => {
     P.conn.off('PLAYER_JOIN');
@@ -50,57 +57,49 @@ const Game: React.FC<Props> = (P) => {
 
     P.conn.off('USER_QUIT');
     P.conn.on('USER_QUIT', () => {
-      console.log('USER_QUIT')
       setHasQuit(true);
     })
 
-    if(GameFuncs.initGrid(P.board.turnArr, n).values !== gameState.values){
-      console.log('UPDATE');
-      const newState = GameFuncs.initGrid(P.board.turnArr, n);
-      setGameState(newState);
+    const newGrid = GameFuncs.initGrid(P.board.turnArr, n);
+    if(newGrid.values !== gameState.values){
+      setGameState(newGrid);
 
+      // Both other player and this player will update their boards from this listener
       P.conn.off('UPDATE_TURN');
       P.conn.on('UPDATE_TURN', (message: any) => {
-        console.log('UPDATE_TURN: ' + new Date().toString());
         let ta = message.turnArr;
     
         P.setTurnArr(ta);
-        
       })
     }
   }, [P.board, hasQuit] );
 
+  // BUG Somehow a value of "151" will turn into "15" and become a potentially valid
+  // This gets called inside InputCell
   const handleTurn = (index: number, value: number) => {
+    console.log(isTurn);
+
+    //initialize variables
+    // const turnArr = P.board.turnArr, len = turnArr.length; 
+    const testInput = GameFuncs.testInput(index, gameState.values, n, value);
+    const canTurn = P.isPlayer === isTurn;
     let newErrors: GameErrors = {types: [], cells: []};
-    console.log({
-      index: index,
-      value: value
-    })
-    let testInput = GameFuncs.testInput(index, gameState.values, n, value);
-    let canTurn = P.board.turnArr.length > 0 ? P.board.turnArr.reverse()[0].player !== P.isPlayer : P.isPlayer === 1;
-    // console.log(validInput && canTurn);
 
-    // Use this to test with 1 client
-    // let canTurn = true;
-    let plyr = 1;
-    if(P.board.turnArr.length > 0){
-      P.board.turnArr.reverse()[0].player === 1 ? plyr = 2 : plyr = 1;
-    }
-
-    console.log(canTurn);
+    //Make sure input is valid
     if(testInput === true && canTurn && value > 0 && value <= n*n){
-      let newTurn: Turn = {
+      const newTurn: Turn = {
         gameID: P.board._id,
         player: P.isPlayer,
         index: index,
         value: value
       }
-
+      
+      //Send new turn
       P.conn.emit('ADD_TURN', newTurn);
     }
 
     // Handle Errors
-    if(testInput !== true) {
+    if(typeof testInput !== 'boolean' && value !== 0) {
       newErrors = {
         types: [...newErrors.types, 'BAD_INPUT'],
         cells: testInput
@@ -110,18 +109,19 @@ const Game: React.FC<Props> = (P) => {
       newErrors.types.push('NOT_TURN')
     }
     if(value < 1){
-      newErrors.types.push('NEG_NUM')
+      newErrors.types.push('ZERO_NUM')
     }
     if(value > n*n){
       newErrors.types.push('BIG_NUM')
     }
-
     setErrors(newErrors);
-    if(newErrors.types.length > 0) {
-      return false;
-    } else {
-      return true;
-    }
+
+    // This was trying to fix something in InputCell
+    // if(newErrors.types.length > 0) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
   }
 
   return (
@@ -135,10 +135,19 @@ const Game: React.FC<Props> = (P) => {
       :
       hasJoined ? 
         <React.Fragment>
-          <ScoreBord players={gameState.players} errors={errors}/>
-          <GameGrid players={gameState.players} values={gameState.values} handleTurn={handleTurn}/>
+          <ScoreBord
+          players={gameState.players}
+          errors={errors} isTurn={isTurn}
+          isPlayer={P.isPlayer}
+          />
+          <GameGrid 
+          errors={errors.cells}
+          players={gameState.players}
+          values={gameState.values}
+          handleTurn={handleTurn}
+          />
     
-          <div className='game-sidebar'>&nbsp;</div>
+          <div className='game-sidebar-right'>&nbsp;</div>
         </React.Fragment>
       :
         <div className='pre-game'>

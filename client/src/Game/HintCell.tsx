@@ -13,17 +13,18 @@ type Props = {
 const HintCell: React.FC<Props> = (P) => {
   // console.log('HINT: ' + P.index);
 
+  // This array is created from a set, and stores the valid inputs for this cell as integers
   const set = Array.from(GameFuncs.getGroupSet(P.index, P.values, P.n));
+  // We need n^2 hints so we create a n^2 array of booleans
   let arr = Array(P.n * P.n).fill(false);
-  
+  // Go through set and flip the necessary booleans
   for(let x of set){
     if(x > 0){
       arr[x-1] = true
     }
   }
 
-  // console.log(arr);
-
+  // map array and either give an integer or whitespace
   return(
     <div className={`hint-cell hint-cell-${P.n}`}>
       {arr.map( (e: boolean, i: number) => {

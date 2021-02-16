@@ -15,7 +15,8 @@ class SocketHandler {
     this.io = new ioServer(http);
 
     this.io.on('connection', (socket: Socket) => {
-      const id: string = socket.client.conn.id;
+      const id: string = socket.id;
+      console.log('USER CONNECT: ' + id);
 
       // Initialize new Board and socket room
       socket.on('NEW_GAME', async (message: {size: 81 | 256}, callback: Callback) => {
@@ -62,6 +63,7 @@ class SocketHandler {
 
       // Accept any turn and return updated Board
       socket.on('ADD_TURN', async (message: any) => {
+        console.log(socket.rooms);
 
         try{
           let x = await Controller({type: 'ADD_TURN', payload: message});
@@ -74,11 +76,12 @@ class SocketHandler {
 
       // Remove empty rooms and handle in-game disconnect issues
       socket.on('disconnect', () => {
-        let roomSet = new Set(this.io.sockets.adapter.rooms.keys());
         
         Object.keys(this.rooms).forEach( (e: string) => {
-          this.io.in(e).emit('USER_QUIT', {})
-          if(!roomSet.has(e)){
+          let set = new Set(this.rooms[e]);
+
+          if(set.has(id)){
+            this.io.in( e ).emit('USER_QUIT', {});
             delete this.rooms[e]
           }
         });
