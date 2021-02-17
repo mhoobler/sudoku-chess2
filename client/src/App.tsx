@@ -13,11 +13,7 @@ import {connect} from 'react-redux';
 import Home from './pages/Home';
 import CreateGame from './pages/CreateGame';
 import JoinGame from './pages/JoinGame';
-import Game from '../../trash/Game';
-//Test Game
 import Game2 from './Game/Game';
-
-// import GameFuncs from './Game2/GameFuncs';
 
 import './App.css';
 
