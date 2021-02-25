@@ -43,13 +43,17 @@ if (process.env.NODE_ENV === "production") {
 // Send every request to the React app
 // Define any API routes before this runs
 // will be broken in development...
-app.get("*", function (req, res) {
+app.get("/", function (req, res) {
   if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "./client/build/index.html"));
   } else {
     // reminder
     res.json({ message: "Go to http://localhost:3000" });
   }
+});
+
+app.get("*", function (req, res) {
+  res.json({ message: "404" });
 });
 
 // socket(io);
