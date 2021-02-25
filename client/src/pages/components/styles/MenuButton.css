@@ -1,0 +1,27 @@
+:root {
+  --dark-shade: #551100;
+  --hover: #cc9988;
+  --light-shade: #996655;
+  --border-text: #000000;
+}
+
+button,
+a {
+  background-color: var(--light-shade);
+  border: 5px var(--border-text) solid;
+  border-radius: 10px;
+  color: var(--border-text);
+  box-shadow: 0 0 3px 0 #7f7f7f inset, 0 0 3px 0 #7f7f7f;
+}
+
+a {
+  text-decoration: none;
+}
+
+.menu-button {
+  display: block;
+  margin: 25px auto;
+  padding: 10px 10px 6px 10px;
+  font-size: 20px;
+  width: 33%;
+}
