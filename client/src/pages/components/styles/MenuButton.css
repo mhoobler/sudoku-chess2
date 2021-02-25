@@ -1,23 +1,24 @@
-:root{
+:root {
   --dark-shade: #551100;
-  --hover: #CC9988;
+  --hover: #cc9988;
   --light-shade: #996655;
-  --border-text: #000000
+  --border-text: #000000;
 }
 
-button, a{
+button,
+a {
   background-color: var(--light-shade);
   border: 5px var(--border-text) solid;
   border-radius: 10px;
   color: var(--border-text);
-  box-shadow: 0 0 3px 0 #7F7F7F inset, 0 0 3px 0 #7F7F7F;
+  box-shadow: 0 0 3px 0 #7f7f7f inset, 0 0 3px 0 #7f7f7f;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-.menu-button{
+.menu-button {
   display: block;
   margin: 25px auto;
   padding: 10px 10px 6px 10px;

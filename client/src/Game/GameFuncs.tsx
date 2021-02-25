@@ -1,4 +1,4 @@
-type getIndexes = (i: number, n: number) => number[]
+type getIndexes = (i: number, n: number) => number[];
 
 /* 
 Oh boi I get to explain this nightmare and you get to read it.
@@ -10,15 +10,15 @@ const funcs = {
   // This is the heart of this whole operation
   // it creates the two arrays that will be used to help render the Grid's Cells
   initGrid: (ta: Turn[], n: number) => {
-    let N = n*n;
-    let values = new Array(N*N).fill(0);
-    let players = new Array(N*N).fill(0);
+    let N = n * n;
+    let values = new Array(N * N).fill(0);
+    let players = new Array(N * N).fill(0);
 
     /**************************
     The order here is important
     ***************************/
-    for(let i=0; i<ta.length; i++){
-      let turn = ta[i]
+    for (let i = 0; i < ta.length; i++) {
+      let turn = ta[i];
       // First add the turn to the array
       values[turn.index] = turn.value;
       players[turn.index] = turn.player;
@@ -26,56 +26,55 @@ const funcs = {
       // Then get auto completes
       let autos = funcs.autoComplete(turn.index, values, 3);
       console.log(autos);
-      if(autos){
-        for(let a of autos){
-          if(a.value !== 0){
+      if (autos) {
+        for (let a of autos) {
+          if (a.value !== 0) {
             values[a.index] = a.value;
             players[a.index] = turn.player;
           }
         }
       }
-
     }
 
-    return {values, players}
+    return { values, players };
   },
-  
+
   // The next three functions help calculate how the Sudoku grid should be organized
-  // They only return INDEXES that are meant to point to one of the arrays from initGrid 
+  // They only return INDEXES that are meant to point to one of the arrays from initGrid
   // They do NOT return actual values from said arrays
   getRow: (index: number, n: number) => {
-    let N = n*n;
+    let N = n * n;
     let ri = ~~(index / N) * N;
-    let rowIndexes: number[] = Array.from( Array(N).keys() ).map( (e: number) => {
-      return ri+e;
+    let rowIndexes: number[] = Array.from(Array(N).keys()).map((e: number) => {
+      return ri + e;
     });
-  
+
     return rowIndexes;
   },
-  
+
   getCol: (index: number, n: number) => {
-    let N = n*n;
+    let N = n * n;
     let ci = index % N;
-    
-    let colIndexes: number[] = Array.from( Array(N).keys() ).map ( (e: number) => {
-      return ci + (N*e);
-    })
-  
+
+    let colIndexes: number[] = Array.from(Array(N).keys()).map((e: number) => {
+      return ci + N * e;
+    });
+
     return colIndexes;
   },
-  
+
   getBox: (index: number, n: number) => {
-    let N = n*n;
-    let rstart = ~~( index / (N * n));
-    let cstart = ~~( (index % N) / n);
-    let start = (rstart * N * n) + (cstart * n);
+    let N = n * n;
+    let rstart = ~~(index / (N * n));
+    let cstart = ~~((index % N) / n);
+    let start = rstart * N * n + cstart * n;
     // console.log(start);
-  
+
     let boxIndexes: number[] = [];
 
-    for(let ri=0; ri<n; ri++){
-      for(let ci=0; ci<n; ci++){
-        boxIndexes.push( (start + ci) + (ri * N) )
+    for (let ri = 0; ri < n; ri++) {
+      for (let ci = 0; ci < n; ci++) {
+        boxIndexes.push(start + ci + ri * N);
       }
     }
 
@@ -87,106 +86,108 @@ const funcs = {
   getGroupSet: (index: number, arr: number[], n: number) => {
     // console.time('getGroupSet');
 
-    let indexes = funcs.getBox(index, n)
+    let indexes = funcs
+      .getBox(index, n)
       .concat(funcs.getCol(index, n))
       .concat(funcs.getRow(index, n));
-    let all = indexes.map( (e: number) => {
-      return arr[e]
-    })
+    let all = indexes.map((e: number) => {
+      return arr[e];
+    });
 
     let set = new Set(all);
 
     // console.timeEnd('getGroupSet');
-    return set
+    return set;
   },
 
   // Pretty simple, tests user input;
   testInput: (index: number, arr: number[], n: number, value: number) => {
     let set = funcs.getGroupSet(index, arr, n);
 
-    if(value > 0 && value <= n*n){
-
-      if(set.has(value)){
+    if (value > 0 && value <= n * n) {
+      if (set.has(value)) {
         let indexes = Array.from(
-          new Set( [
-            funcs.getRow(index, n),
-            funcs.getCol(index, n),
-            funcs.getBox(index, n)
-          ].flat() )
+          new Set(
+            [
+              funcs.getRow(index, n),
+              funcs.getCol(index, n),
+              funcs.getBox(index, n),
+            ].flat()
+          )
         );
-  
-        return indexes.filter( (e: number) => (arr[e] === value) )
-      }
-      else {
+
+        return indexes.filter((e: number) => arr[e] === value);
+      } else {
         return true;
       }
-    }
-    
-    else {
+    } else {
       return false;
     }
-
   },
 
   // I'm sorry I almost completely forgot how this works
-  autoComplete: (index: number, arr: number[], n: number, autoArr: AutoComplete[] = []): any => {
-    
-    let indexes = new Set( [
-      funcs.getRow(index, n),
-      funcs.getCol(index, n),
-      funcs.getBox(index, n)
-    ].flat() )
+  autoComplete: (
+    index: number,
+    arr: number[],
+    n: number,
+    autoArr: AutoComplete[] = []
+  ): any => {
+    let indexes = new Set(
+      [
+        funcs.getRow(index, n),
+        funcs.getCol(index, n),
+        funcs.getBox(index, n),
+      ].flat()
+    );
 
-    let found = Array.from(indexes).map( (e: any) => {
-      return {
-        set: funcs.getGroupSet(e, arr, n),
-        index: e
-      };
-    }).filter( (e) => e.set.size === n*n && arr[e.index] === 0);
+    let found = Array.from(indexes)
+      .map((e: any) => {
+        return {
+          set: funcs.getGroupSet(e, arr, n),
+          index: e,
+        };
+      })
+      .filter((e) => e.set.size === n * n && arr[e.index] === 0);
     console.log(found);
 
-    if(found.length > 0){
-
+    if (found.length > 0) {
       let newArr = [...arr];
 
-      let autos = found.map( (e) => {
+      let autos = found.map((e) => {
         e.set.delete(0);
         let setArr = Array.from(e.set);
-        let boolArr = Array(n*n).fill(false);
+        let boolArr = Array(n * n).fill(false);
 
-        for(let i=0; i<setArr.length; i++){
-          boolArr[ setArr[i]-1 ] = true;
+        for (let i = 0; i < setArr.length; i++) {
+          boolArr[setArr[i] - 1] = true;
         }
 
         let auto = {
           index: e.index,
-          value: boolArr.findIndex( (b: boolean) => (!b) ) + 1
-        }
+          value: boolArr.findIndex((b: boolean) => !b) + 1,
+        };
 
         newArr[auto.index] = auto.value;
-        found.forEach( e => e.set.add(auto.value) )
+        found.forEach((e) => e.set.add(auto.value));
 
         return auto;
-      })
+      });
 
       // check if autocompleted cell will cause more autocompletes
-      let recusive = autos.map( (e) => {
+      let recusive = autos.map((e) => {
         return funcs.autoComplete(e.index, newArr, n, [...autoArr, e]);
       });
-      
+
       // let bigSet = new Set(autos.concat(recusive).flat());
       let bigSet = autos.concat(recusive).flat();
       console.log(bigSet);
       return Array.from(bigSet);
     } else {
-
       // if no autocompletes were found, return what we got (or empty array)
       return autoArr;
     }
-
-  }
-} 
-
+  },
+};
 
 export default funcs;
 /*     0        1        2

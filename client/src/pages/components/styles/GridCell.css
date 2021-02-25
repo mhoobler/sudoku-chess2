@@ -5,13 +5,13 @@
   border: 1px solid black;
 }
 
-.grid-cell-size-3{
+.grid-cell-size-3 {
   font-size: 2.25rem;
   width: 5rem;
   height: 5rem;
 }
 
-.grid-cell-size-4{
+.grid-cell-size-4 {
   font-size: 2rem;
   width: 4rem;
   height: 4rem;
@@ -55,18 +55,18 @@
   vertical-align: middle;
 }
 
-.grid-cell-size-3 > .cell-value{
+.grid-cell-size-3 > .cell-value {
   line-height: 5rem;
 }
 
-.grid-cell-size-4 > .cell-value{
+.grid-cell-size-4 > .cell-value {
   line-height: 4rem;
 }
 
 .player-1 {
-  background-color: #FAA;
+  background-color: #faa;
 }
 
 .player-2 {
-  background-color: #AAF;
+  background-color: #aaf;
 }

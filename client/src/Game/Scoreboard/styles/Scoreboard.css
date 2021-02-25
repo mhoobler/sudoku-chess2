@@ -1,9 +1,9 @@
-.score-card{
+.score-card {
   display: flex;
   flex-direction: row;
 }
 
-.player-dot{
+.player-dot {
   width: 1rem;
   height: 1rem;
   border-radius: 100%;
@@ -18,20 +18,20 @@
   margin-left: 0.5rem;
 }
 
-.player-dot::after{
-  content: '\00a0';
+.player-dot::after {
+  content: "\00a0";
 }
 
-.player-dot.player-1{
+.player-dot.player-1 {
   background-color: var(--player-1);
   border: 4px solid var(--player-1);
 }
 
-.player-dot.player-2{
+.player-dot.player-2 {
   background-color: var(--player-2);
   border: 4px solid var(--player-2);
 }
 
-.player-dot.isturn{
-  background-color: #AFA;
+.player-dot.isturn {
+  background-color: #afa;
 }

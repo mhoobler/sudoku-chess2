@@ -1,54 +1,53 @@
-
 type iS = {
-  board: Board | null,
-  target: number,
-  hintStyle: 'default' | 'inverse',
-  focus: number,
-  isPlayer: undefined | 1 | 2
-}
+  board: Board | null;
+  target: number;
+  hintStyle: "default" | "inverse";
+  focus: number;
+  isPlayer: undefined | 1 | 2;
+};
 
 const initialState: iS = {
   board: null,
   target: 0,
-  hintStyle: 'default',
+  hintStyle: "default",
   focus: 0,
-  isPlayer: undefined
-}
+  isPlayer: undefined,
+};
 
 const reducer = (state = initialState, action: any) => {
-  switch(action.type){
-    case('SET_BOARD'): {
-      const {board, isPlayer} = action.payload;
+  switch (action.type) {
+    case "SET_BOARD": {
+      const { board, isPlayer } = action.payload;
       return {
         ...state,
         board: board,
-        isPlayer: isPlayer
+        isPlayer: isPlayer,
       };
     }
 
-    case('SET_FOCUS'): {
-      const {focus} = action.payload;
+    case "SET_FOCUS": {
+      const { focus } = action.payload;
       return {
         ...state,
-        focus: focus
-      }
+        focus: focus,
+      };
     }
 
-    case('SET_TURNS'): {
-      const {turnArr} = action.payload;
-      return{
+    case "SET_TURNS": {
+      const { turnArr } = action.payload;
+      return {
         ...state,
         board: {
           ...state.board,
-          turnArr
-        }
-      }
+          turnArr,
+        },
+      };
     }
 
     default: {
-      return {...state};
+      return { ...state };
     }
   }
-}
+};
 
 export default reducer;

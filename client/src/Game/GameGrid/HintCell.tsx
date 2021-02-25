@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import GameFuncs from './GameFuncs';
+import GameFuncs from "../GameFuncs";
 
-import './styles/HintCell.css';
+import "./styles/HintCell.css";
 
 type Props = {
-  index: number
-  n: number
-  values: number[]
-}
+  index: number;
+  n: number;
+  values: number[];
+};
 
 const HintCell: React.FC<Props> = (P) => {
   // console.log('HINT: ' + P.index);
@@ -18,20 +18,20 @@ const HintCell: React.FC<Props> = (P) => {
   // We need n^2 hints so we create a n^2 array of booleans
   let arr = Array(P.n * P.n).fill(false);
   // Go through set and flip the necessary booleans
-  for(let x of set){
-    if(x > 0){
-      arr[x-1] = true
+  for (let x of set) {
+    if (x > 0) {
+      arr[x - 1] = true;
     }
   }
 
   // map array and either give an integer or whitespace
-  return(
+  return (
     <div className={`hint-cell hint-cell-${P.n}`}>
-      {arr.map( (e: boolean, i: number) => {
-        return e ? <div key={i}>{i+1}</div> : <div key={i}>{'\xa0'}</div>
+      {arr.map((e: boolean, i: number) => {
+        return e ? <div key={i}>{i + 1}</div> : <div key={i}>{"\xa0"}</div>;
       })}
     </div>
-  )
-}
+  );
+};
 
 export default HintCell;

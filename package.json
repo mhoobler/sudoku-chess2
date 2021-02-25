@@ -1,20 +1,33 @@
 {
-  "name": "sudoku-chess",
+  "name": "sudoku-chess2-server",
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "private": true,
   "scripts": {
-    "start": "concurrently --kill-others \"yarn client\" \"yarn server\" ",
-    "build": "concurrently --kill-others \"yarn prod-client\" \"yarn server\" ",
-    "client": "cd client && yarn start",
-    "prod-client": "cd client && yarn install && yarn build",
-    "server": "cd server && yarn install && nodemon index.ts"
-  },
-  "devDependencies": {
-    "concurrently": "^5.3.0"
+    "start": "concurrently --kill-others \"yarn server\" \"yarn client\"",
+    "start-dev": "concurrently --kill-other \"yarn server\" \"yarn client-dev\"",
+    "server": "nodemon index.ts",
+    "client": "cd client && yarn build",
+    "client-dev": "cd client && yarn start"
   },
   "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/mongoose": "^5.10.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.13",
     "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1"
+    "socket.io": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.22",
+    "@types/socket.io": "^2.1.13",
+    "prettier": "2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   }
 }

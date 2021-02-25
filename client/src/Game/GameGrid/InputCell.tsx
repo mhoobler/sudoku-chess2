@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 type Props = {
-  player: number
-  value: number
-  index: number
-  n: number
-  handleTurn: (i: number, v: number) => void
-}
+  player: number;
+  value: number;
+  index: number;
+  n: number;
+  handleTurn: (i: number, v: number) => void;
+};
 
 const InputCell: React.FC<Props> = (P) => {
   const [value, setValue] = useState<number>(P.value);
@@ -20,43 +20,41 @@ const InputCell: React.FC<Props> = (P) => {
   //   el.removeEventListener('keyup', test);
   // }
 
-  const test = (evt: any) => {
+  const keyHandler = (evt: any) => {
     // console.log(evt);
-    if( (evt as unknown as KeyboardEvent).key === 'Enter') {
+    if (((evt as unknown) as KeyboardEvent).key === "Enter") {
       // console.log(value);
       P.handleTurn(P.index, value);
       // x = P.handleTurn(P.index, value)
       // if(x) { remove(evt.currentTarget) };
       // evt.Handled = true;
     }
-  }
+  };
 
-  useEffect( () => {
-    let x = document.getElementsByClassName('infocus');
-    if(x[0]){
-      x[0].addEventListener('keyup', test);
+  useEffect(() => {
+    let x = document.getElementsByClassName("infocus");
+    if (x[0]) {
+      x[0].addEventListener("keyup", keyHandler);
     }
-
-  }, [value])
+  }, [value]);
 
   // The weird stuff going on in value is to fix leading-zeroes
   return (
     <input
-    className={`input-cell ${P.value === 0 ? 'infocus' : 'nofocus'}`}
-    type='number'
-    min={0}
-    max={P.n * P.n}
-    value={P.value > 0 ? Number(P.value).toString() : Number(value).toString()}
-    onChange={ 
-      (evt) => {
+      className={`input-cell ${P.value === 0 ? "infocus" : "nofocus"}`}
+      type="number"
+      min={0}
+      max={P.n * P.n}
+      value={
+        P.value > 0 ? Number(P.value).toString() : Number(value).toString()
+      }
+      onChange={(evt) => {
         let val = parseInt(evt.currentTarget.value);
         setValue(val);
-      }
-    }
-    disabled={P.value > 0}
+      }}
+      disabled={P.value > 0}
     />
-  )
-}
-
+  );
+};
 
 export default InputCell;

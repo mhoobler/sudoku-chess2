@@ -33,17 +33,17 @@
   background-color: red;
 }
 
-.cell-size-3{
+.cell-size-3 {
   width: 11.11%;
   height: 11.11%;
 }
 
-.cell-size-3{
+.cell-size-3 {
   width: 11.11%;
   height: 11.11%;
 }
 
-.cell-size-4{
+.cell-size-4 {
   width: 6.25%;
   height: 6.25%;
 }
@@ -80,6 +80,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
