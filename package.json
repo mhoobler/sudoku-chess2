@@ -5,11 +5,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "concurrently --kill-others \"yarn server\" \"yarn client\"",
-    "start-dev": "concurrently --kill-other \"yarn server\" \"yarn client-dev\"",
-    "server": "nodemon index.ts",
-    "client": "cd client && yarn build",
-    "client-dev": "cd client && yarn start"
+    "start": "concurrently --kill-others \"yarn client\" \"yarn server\"",
+    "start-dev": "concurrently --kill-others \"yarn server\" \"yarn client-dev\"",
+    "server": "yarn && nodemon index.ts",
+    "client": "cd client && yarn && yarn build",
+    "client-dev": "cd client && yarn && yarn start"
   },
   "dependencies": {
     "@types/body-parser": "^1.19.0",
