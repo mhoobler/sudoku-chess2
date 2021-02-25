@@ -5,11 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "yarn server",
-    "start-dev": "concurrently --kill-others \"yarn server\" \"yarn client-dev\"",
-    "server": "yarn && nodemon index.ts",
-    "client": "cd client && yarn && yarn build",
-    "client-dev": "cd client && yarn && yarn start"
+    "start": "nodemon index.ts"
   },
   "dependencies": {
     "@types/body-parser": "^1.19.0",

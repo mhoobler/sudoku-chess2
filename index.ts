@@ -36,7 +36,7 @@ app.use(parser.json());
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
   // Although this references the build folder... Use the public folder in client/public to publish images/css/any static file
-  app.use(express.static("client/build"));
+  app.use(express.static("build"));
   // client/public is the actual folder to use for static files
 }
 
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
 // will be broken in development...
 app.get("/", function (req, res) {
   if (process.env.NODE_ENV === "production") {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+    res.sendFile("./build/index.html", { root: __dirname });
   } else {
     // reminder
     res.json({ message: "Go to http://localhost:3000" });
