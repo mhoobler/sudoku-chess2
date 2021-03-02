@@ -12,7 +12,9 @@ type IS = {
 
 const initialState: IS = {
   string: "",
-  conn: socketIOClient("http://localhost:3001", { transports: ["websocket"] }),
+  conn: socketIOClient(process.env.HEROKU_URL || "http://localhost:3001", {
+    transports: ["websocket"],
+  }),
 };
 
 const reducer = (state = initialState, action: Action) => {
