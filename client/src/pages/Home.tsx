@@ -8,7 +8,7 @@ const Home: React.FC = () => {
   return (
     <div className="menu-container">
       <div className="menu-header">
-        <h1> SuGoKu</h1>
+        <h1> SuoKu</h1>
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />
