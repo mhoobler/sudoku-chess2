@@ -18,6 +18,7 @@ interface Props {
 
 const App: React.FC<Props> = (P) => {
   const history = useHistory();
+  console.log(process.env.NODE_ENV);
 
   useEffect(() => {
     if (P.board !== null && history.location.pathname !== "/game") {
