@@ -5,10 +5,12 @@ import MenuButton from "./components/MenuButton";
 import "./styles/MenuContainer.css";
 
 const Home: React.FC = () => {
+  console.log(process.env.TEST_URI);
+
   return (
     <div className="menu-container">
       <div className="menu-header">
-        <h1> SuoKu</h1>
+        <h1> SuGoKu</h1>
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />
