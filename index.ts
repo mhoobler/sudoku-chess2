@@ -40,6 +40,9 @@ if (process.env.NODE_ENV === "production") {
   // client/public is the actual folder to use for static files
 }
 
+// API routes
+require("./routes/firebase.ts")(app);
+
 // Send every request to the React app
 // Define any API routes before this runs
 // will be broken in development...

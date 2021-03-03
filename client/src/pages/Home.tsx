@@ -1,11 +1,15 @@
 import React from "react";
+import axios from "axios";
 
 import MenuButton from "./components/MenuButton";
 
 import "./styles/MenuContainer.css";
 
 const Home: React.FC = () => {
-  console.log(process.env.TEST_URI);
+  axios
+    .get("/_firebase")
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 
   return (
     <div className="menu-container">
