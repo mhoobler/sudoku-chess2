@@ -8,7 +8,7 @@ type Props = {
   handleModal: (b?: boolean) => void
 }
 
-const Test: React.FC<Props> = (P) => {
+const FadeModal: React.FC<Props> = (P) => {
 
   const [active, setActive] = useState(false);
   const [display, setDisplay] = useState(false);
@@ -46,10 +46,10 @@ const Test: React.FC<Props> = (P) => {
       onClick={display ? handleHide : handleShow}
     >
       <div className='modal-body'>
-        Test
+        FadeModal
       </div>
     </div>
   )
 }
 
-export default Test;
+export default FadeModal;

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 import MenuButton from "./components/MenuButton";
-import Test from './components/Test';
+import FadeModal from './components/FadeModal';
 import Login from './components/Login';
 
 import "./styles/MenuContainer.css";
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
         <h1> SuGoKu</h1>
         <div> {display.toString()} </div>
         <Login handleModal={handleModal}/>
-        {display ? <Test timer={200} handleModal={handleModal}/> : null}
+        {display ? <FadeModal timer={400} handleModal={handleModal}/> : null}
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />
