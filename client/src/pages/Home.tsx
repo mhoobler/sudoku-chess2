@@ -1,20 +1,25 @@
-import React from "react";
-import axios from "axios";
+import React, {useState} from "react";
 
 import MenuButton from "./components/MenuButton";
+import Test from './components/Test';
+import Login from './components/Login';
 
 import "./styles/MenuContainer.css";
 
 const Home: React.FC = () => {
-  axios
-    .get("/_firebase")
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+  const [display, setDisplay] = useState(false);
+
+  const handleModal = () => {
+    setDisplay(!display);
+  }
 
   return (
     <div className="menu-container">
       <div className="menu-header">
         <h1> SuGoKu</h1>
+        <div> {display.toString()} </div>
+        <Login handleModal={handleModal}/>
+        {display ? <Test timer={200} handleModal={handleModal}/> : null}
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />

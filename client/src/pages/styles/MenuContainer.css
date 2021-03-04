@@ -14,3 +14,11 @@
   font-size: 36px;
   font-family: "Comfortaa", cursive;
 }
+
+#login {
+  right: 10px;
+  top: 10px;
+  display: block;
+  position: fixed;
+  z-index: 2;
+}

@@ -38,10 +38,9 @@ if (process.env.NODE_ENV === "production") {
   // Although this references the build folder... Use the public folder in client/public to publish images/css/any static file
   app.use(express.static("./client/build"));
   // client/public is the actual folder to use for static files
+} else {
+  dotenv.config();
 }
-
-// API routes
-require("./routes/firebase.ts")(app);
 
 // Send every request to the React app
 // Define any API routes before this runs

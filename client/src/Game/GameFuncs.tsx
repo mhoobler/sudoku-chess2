@@ -1,5 +1,3 @@
-type getIndexes = (i: number, n: number) => number[];
-
 /* 
 Oh boi I get to explain this nightmare and you get to read it.
 This file infers what the *Grid* state is base on the *Turns*
