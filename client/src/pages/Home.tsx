@@ -18,7 +18,6 @@ const Home: React.FC = () => {
     <div className="menu-container">
       <div className="menu-header">
         <h1> SuGoKu </h1>
-        <div> {display.toString()} </div>
         <Login handleModal={handleModal} />
         {display ? (
           <FadeModal timer={400} handleModal={handleModal}>
