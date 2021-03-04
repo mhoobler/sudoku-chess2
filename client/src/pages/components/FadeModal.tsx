@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-import './styles/Test.css';
+import './styles/FadeModal.css';
 
 type Props = {
   addClass?: string
