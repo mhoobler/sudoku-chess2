@@ -5,12 +5,11 @@ import './styles/FadeModal.css';
 type Props = {
   addClass?: string
   timer: number //milliseconds
-  handleModal: (b?: boolean) => void
+  handleModal: () => void
 }
 
 const FadeModal: React.FC<Props> = (P) => {
 
-  const [active, setActive] = useState(false);
   const [display, setDisplay] = useState(false);
 
   useEffect( () => {
@@ -18,18 +17,12 @@ const FadeModal: React.FC<Props> = (P) => {
   },[]);
 
   const handleShow = () => {
-    setActive(true);
     setDisplay(true);
-    setTimeout( () => {
-      setActive(false);
-    }, P.timer);
   }
 
   const handleHide = () => {
-    setActive(true);
     setDisplay(false);
     setTimeout( () => {
-      setActive(false);
       P.handleModal();
     }, P.timer);
   }
@@ -38,16 +31,18 @@ const FadeModal: React.FC<Props> = (P) => {
     <div className={`
       modal-test 
       ${display ? 'show' : 'hide'} 
-      ${active ? 'active' : '' }
       `}
       style={{
         transitionDuration: P.timer + 'ms'
       }}
-      onClick={display ? handleHide : handleShow}
+      data-modal='modal'
     >
-      <div className='modal-body'>
-        FadeModal
-      </div>
+      {React.Children.map(P.children, child => {
+        if(React.isValidElement(child)) {
+          return React.cloneElement(child, {handleHide})
+        }
+        return child
+      })}
     </div>
   )
 }
