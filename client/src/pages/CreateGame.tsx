@@ -7,13 +7,14 @@ import { newGame } from "../redux/actions/userActions";
 import MenuButton from "./components/MenuButton";
 
 type Props = {
-  newGame: (n: 81 | 256) => void;
+  newGame: (n: 81 | 256, uid: string) => void;
+  uid: string | null;
 };
 
 const CreateGame: React.FC<Props> = (P) => {
   const handleCreate = (num: 81 | 256) => {
     console.log(num);
-    P.newGame(num);
+    P.newGame(num, P.uid ? P.uid : "Anon");
   };
 
   return (
@@ -30,4 +31,10 @@ const CreateGame: React.FC<Props> = (P) => {
   );
 };
 
-export default connect(null, { newGame })(CreateGame);
+const mapStateToProps = (state: any) => {
+  return {
+    uid: state.user.uid
+  }
+}
+
+export default connect(mapStateToProps, { newGame })(CreateGame);

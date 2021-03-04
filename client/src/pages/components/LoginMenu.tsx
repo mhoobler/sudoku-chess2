@@ -1,13 +1,17 @@
 import React from "react";
+import {connect} from "react-redux";
 import firebase from "firebase";
 import "firebase/auth";
 
 import MenuButton from "./MenuButton";
 
+import {signInSomeAuth} from "../../redux/actions/userActions";
+
 import "./styles/LoginMenu.css";
 
 type Props = {
   handleHide: () => void;
+  signInSomeAuth: (uid: string) => void;
 };
 
 const LoginMenu: React.FC<Props> = (P) => {
@@ -18,7 +22,6 @@ const LoginMenu: React.FC<Props> = (P) => {
           return new firebase.auth.GoogleAuthProvider();
         }
         case "GITHUB": {
-          //          return new firebase.auth.GithubAuthProvider();
           return console.warn("Github not enabled");
         }
         default: {
@@ -32,10 +35,15 @@ const LoginMenu: React.FC<Props> = (P) => {
         .auth()
         .signInWithPopup(provider)
         .then((res) => {
-          let id = firebase.auth().currentUser?.uid;
-          console.log(id);
+          let uid = firebase.auth().currentUser?.uid;
+          console.log(uid);
           console.log(res);
-          P.handleHide();
+          if(uid){
+            P.signInSomeAuth(uid);
+            P.handleHide();
+          } else {
+            console.warn("Google Auth failed");
+          }
         })
         .catch((err) => console.log(err))
         .finally(P.handleHide);
@@ -59,4 +67,4 @@ const LoginMenu: React.FC<Props> = (P) => {
   );
 };
 
-export default LoginMenu;
+export default connect(null, {signInSomeAuth})(LoginMenu);

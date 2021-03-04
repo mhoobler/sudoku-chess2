@@ -37,8 +37,19 @@ const Controller = async (action: Lib.Action) => {
       break;
     }
 
-    default: {
-      return "DEFAULT";
+    case "ADD_PLAYER": {
+      try {
+        let board: Lib.Board = await db.Game.Board.findOneAndUpdate(
+          { _id: action.payload._id },
+          { playerJoin: action.payload.uid },
+          { new: true }
+        );
+
+        return board;
+      } catch (err) {
+        console.log(err);
+      }
+      break;
     }
 
     case "ADD_TURN": {
@@ -57,6 +68,11 @@ const Controller = async (action: Lib.Action) => {
       }
       break;
     }
+
+    default: {
+      return "DEFAULT";
+    }
+
   }
 };
 

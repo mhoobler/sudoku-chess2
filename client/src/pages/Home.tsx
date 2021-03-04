@@ -24,6 +24,7 @@ const Home: React.FC = () => {
             <LoginMenu
               handleHide={() => {
                 /* Is assigned in FadeModal */
+                console.warn("LoginMenu failed to load proper props");
               }}
             />
           </FadeModal>

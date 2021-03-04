@@ -21,9 +21,9 @@ class SocketHandler {
       // Initialize new Board and socket room
       socket.on(
         "NEW_GAME",
-        async (message: { size: 81 | 256 }, callback: Callback) => {
+        async (message: { size: 81 | 256, uid: string }, callback: Callback) => {
           let board: NewBoard = {
-            playerCreate: "test",
+            playerCreate: message.uid,
             size: message.size,
             turnArr: [],
           };
@@ -52,9 +52,9 @@ class SocketHandler {
       // Return selected Board by _id and join socket room
       socket.on(
         "JOIN_GAME",
-        async (message: { _id: string }, callback: Callback) => {
+        async (message: { _id: string, uid: string }, callback: Callback) => {
           try {
-            let x = await Controller({ type: "GET_BOARD", payload: message });
+            let x = await Controller({ type: "ADD_PLAYER", payload: message });
 
             callback(x);
 
