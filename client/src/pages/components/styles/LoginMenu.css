@@ -1,0 +1,12 @@
+.modal-content {
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  width: 33.33%;
+  height: 50%;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 
 import MenuButton from "./components/MenuButton";
+import FadeModal from "./components/FadeModal";
+import Login from "./components/Login";
+import LoginMenu from "./components/LoginMenu";
 
 import "./styles/MenuContainer.css";
 
 const Home: React.FC = () => {
-  console.log(process.env.TEST_URI);
+  const [display, setDisplay] = useState(false);
+
+  const handleModal = () => {
+    setDisplay(!display);
+  };
 
   return (
     <div className="menu-container">
       <div className="menu-header">
-        <h1> SuGoKu</h1>
+        <h1> SuGoKu </h1>
+        <Login handleModal={handleModal} />
+        {display ? (
+          <FadeModal timer={400} handleModal={handleModal}>
+            <LoginMenu
+              handleHide={() => {
+                /* Is assigned in FadeModal */
+                console.warn("LoginMenu failed to load proper props");
+              }}
+            />
+          </FadeModal>
+        ) : null}
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />

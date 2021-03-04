@@ -9,6 +9,9 @@ import CreateGame from "./pages/CreateGame";
 import JoinGame from "./pages/JoinGame";
 import Game from "./Game";
 
+import firebase from "firebase";
+import "firebase/auth";
+
 import "./App.css";
 
 interface Props {
@@ -18,9 +21,17 @@ interface Props {
 
 const App: React.FC<Props> = (P) => {
   const history = useHistory();
-  console.log(process.env.NODE_ENV);
 
   useEffect(() => {
+    if (firebase.apps.length === 0) {
+      let app = firebase.initializeApp({
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
+      });
+      console.log(app);
+    }
     if (P.board !== null && history.location.pathname !== "/game") {
       history.push("/game");
     }

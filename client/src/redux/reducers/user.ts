@@ -8,6 +8,7 @@ interface Action {
 type IS = {
   string: string;
   conn: typeof Socket;
+  uid: string | null;
 };
 
 const initialState: IS = {
@@ -20,6 +21,7 @@ const initialState: IS = {
       transports: ["websocket"],
     }
   ),
+  uid: null
 };
 
 const reducer = (state = initialState, action: Action) => {
@@ -31,6 +33,15 @@ const reducer = (state = initialState, action: Action) => {
         ...state,
         string: string,
       };
+    }
+
+    case "SET_UID": {
+      const {uid} = action.payload;
+
+      return {
+        ...state,
+        uid: uid
+      }
     }
 
     default: {

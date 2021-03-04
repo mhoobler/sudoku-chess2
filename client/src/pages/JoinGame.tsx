@@ -8,7 +8,8 @@ import { joinGame } from "../redux/actions/userActions";
 
 type Props = {
   conn: typeof Socket;
-  joinGame: (_id: string) => void;
+  joinGame: (_id: string, uid: string) => void;
+  uid: string
 };
 
 const JoinGame: React.FC<Props> = (P) => {
@@ -20,16 +21,16 @@ const JoinGame: React.FC<Props> = (P) => {
     });
   }, [P.conn]);
 
-  const joinRoom = (_id: string) => {
-    P.joinGame(_id);
-  };
+  const handleJoin = (_id: string) => {
+    P.joinGame(_id, (P.uid ? P.uid : 'Anon'));
+  }
 
   return (
     <div className="menu-container">
       <h1>JoinGame</h1>
 
       {rooms.map((_id: string, i: number) => {
-        return <MenuButton key={i} text={_id} action={() => joinRoom(_id)} />;
+        return <MenuButton key={i} text={_id} action={() => handleJoin(_id)} />;
       })}
     </div>
   );
@@ -38,6 +39,7 @@ const JoinGame: React.FC<Props> = (P) => {
 const mapStateToProps = (state: any) => {
   return {
     conn: state.user.conn,
+    uid: state.user.uid
   };
 };
 
