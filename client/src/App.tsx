@@ -9,8 +9,8 @@ import CreateGame from "./pages/CreateGame";
 import JoinGame from "./pages/JoinGame";
 import Game from "./Game";
 
-import firebase from 'firebase';
-import 'firebase/auth';
+import firebase from "firebase";
+import "firebase/auth";
 
 import "./App.css";
 
@@ -28,7 +28,7 @@ const App: React.FC<Props> = (P) => {
         apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
         authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
         projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-        appId: process.env.REACT_APP_FIREBASE_APP_ID
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
       });
       console.log(app);
     }

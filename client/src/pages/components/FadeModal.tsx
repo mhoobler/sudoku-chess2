@@ -1,50 +1,46 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 
-import './styles/FadeModal.css';
+import "./styles/FadeModal.css";
 
 type Props = {
-  addClass?: string
-  timer: number //milliseconds
-  handleModal: () => void
-}
+  addClass?: string;
+  timer: number; //milliseconds
+  handleModal: () => void;
+};
 
 const FadeModal: React.FC<Props> = (P) => {
-
   const [display, setDisplay] = useState(false);
 
-  useEffect( () => {
-    handleShow();
-  },[]);
-
-  const handleShow = () => {
+  useEffect(() => {
     setDisplay(true);
-  }
+  }, []);
 
   const handleHide = () => {
     setDisplay(false);
-    setTimeout( () => {
+    setTimeout(() => {
       P.handleModal();
     }, P.timer);
-  }
+  };
 
-  return(
-    <div className={`
+  return (
+    <div
+      className={`
       modal-test 
-      ${display ? 'show' : 'hide'} 
+      ${display ? "show" : "hide"} 
       `}
       style={{
-        transitionDuration: P.timer + 'ms'
+        transitionDuration: P.timer + "ms",
       }}
-      data-modal='modal'
+      data-modal="modal"
     >
-      {React.Children.map(P.children, child => {
-        if(React.isValidElement(child)) {
-          return React.cloneElement(child, {handleHide})
+      {React.Children.map(P.children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { handleHide });
         }
-        return child
+        return child;
       })}
     </div>
-  )
-}
+  );
+};
 
 export default FadeModal;
