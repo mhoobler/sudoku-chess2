@@ -1,11 +1,11 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import firebase from "firebase";
 import "firebase/auth";
 
 import MenuButton from "./MenuButton";
 
-import {signInSomeAuth} from "../../redux/actions/userActions";
+import { signInSomeAuth } from "../../redux/actions/userActions";
 
 import "./styles/LoginMenu.css";
 
@@ -38,7 +38,7 @@ const LoginMenu: React.FC<Props> = (P) => {
           let uid = firebase.auth().currentUser?.uid;
           console.log(uid);
           console.log(res);
-          if(uid){
+          if (uid) {
             P.signInSomeAuth(uid);
             P.handleHide();
           } else {
@@ -53,7 +53,8 @@ const LoginMenu: React.FC<Props> = (P) => {
   return (
     <div className="modal-content">
       <div className="modal-header">
-        <button onClick={P.handleHide}>X</button>
+        <button className="fa fa-arrow-left" onClick={P.handleHide}></button>
+        <h4>Login</h4>
       </div>
       <div className="modal-body">
         <MenuButton action={() => handleLogin("GOOGLE")}>
@@ -67,4 +68,4 @@ const LoginMenu: React.FC<Props> = (P) => {
   );
 };
 
-export default connect(null, {signInSomeAuth})(LoginMenu);
+export default connect(null, { signInSomeAuth })(LoginMenu);

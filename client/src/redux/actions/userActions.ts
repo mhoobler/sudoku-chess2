@@ -5,14 +5,10 @@ export const newGame = (num: 81 | 256, uid: string) => {
     const { conn } = getState().user;
     console.log(conn);
 
-    conn.emit(
-      "NEW_GAME",
-      { size: num, uid: uid },
-      async (message: Board) => {
-        let x = await message;
-        dispatch(setBoard(x, 1));
-      }
-    );
+    conn.emit("NEW_GAME", { size: num, uid: uid }, async (message: Board) => {
+      let x = await message;
+      dispatch(setBoard(x, 1));
+    });
   };
 };
 
@@ -34,6 +30,6 @@ export const joinGame = (_id: string, uid: string) => {
 export const signInSomeAuth = (uid: string) => ({
   type: "SET_UID",
   payload: {
-    uid: uid
-  }
+    uid: uid,
+  },
 });

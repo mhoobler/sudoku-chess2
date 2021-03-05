@@ -33,8 +33,8 @@ const CreateGame: React.FC<Props> = (P) => {
 
 const mapStateToProps = (state: any) => {
   return {
-    uid: state.user.uid
-  }
-}
+    uid: state.user.uid,
+  };
+};
 
 export default connect(mapStateToProps, { newGame })(CreateGame);

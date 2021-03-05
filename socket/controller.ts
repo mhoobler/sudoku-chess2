@@ -72,7 +72,6 @@ const Controller = async (action: Lib.Action) => {
     default: {
       return "DEFAULT";
     }
-
   }
 };
 

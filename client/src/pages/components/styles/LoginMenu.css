@@ -1,12 +1,38 @@
 .modal-content {
-  background-color: red;
+  background-color: var(--light-shade);
   display: flex;
   flex-direction: column;
   width: 33.33%;
   height: 50%;
+  transform: translateY(7%);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: 61px;
+  border-bottom: 1px solid var(--hover);
+}
+
+.modal-header > h4 {
+  position: absolute;
+  margin: auto;
+  font-weight: 600;
+}
+
+.modal-header > button {
+  font-size: 20px;
+  width: 60px;
+  height: 60px;
+  margin-right: auto;
+  border: none;
+  background-color: var(--light-shade);
+  border-right: 1px solid var(--hover);
 }
 
 .modal-body {
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 }
