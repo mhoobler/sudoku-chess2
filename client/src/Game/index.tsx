@@ -17,7 +17,7 @@ type GameState = {
 };
 
 type Props = {
-  conn: typeof Socket;
+  conn?: typeof Socket;
   board: Board;
   focus: number;
   hintStyle: "default" | "inverse";
@@ -38,7 +38,9 @@ const Game: React.FC<Props> = (P) => {
 
   // States to store errors and to help with listeners
   const [errors, setErrors] = useState<GameErrors>({ types: [], cells: [] });
-  const [hasJoined, setHasJoined] = useState(P.isPlayer === 2 ? true : false);
+  const [hasJoined, setHasJoined] = useState(
+    P.conn ? (P.isPlayer === 2 ? true : false) : true
+  );
   const [hasQuit, setHasQuit] = useState(false);
   // Determine player turn
   const turnArr = P.board.turnArr,
@@ -51,71 +53,75 @@ const Game: React.FC<Props> = (P) => {
       setGameState(newGrid);
     }
 
-    P.conn.on("PLAYER_JOIN", () => {
-      setHasJoined(true);
-    });
-    P.conn.on("USER_QUIT", () => {
-      setHasQuit(true);
-    });
-    P.conn.on("UPDATE_TURN", (message: any) => {
-      P.setTurnArr(message.turnArr);
-    });
+    if (P.conn) {
+      P.conn.on("PLAYER_JOIN", () => {
+        setHasJoined(true);
+      });
+      P.conn.on("USER_QUIT", () => {
+        setHasQuit(true);
+      });
+      P.conn.on("UPDATE_TURN", (message: any) => {
+        P.setTurnArr(message.turnArr);
+      });
 
-    return () => {
-      P.conn.off("UPDATE_TURN");
-      P.conn.off("USER_QUIT");
-      P.conn.off("UPDATE_TURN");
-    };
+      return () => {
+        P.conn!.off("UPDATE_TURN");
+        P.conn!.off("USER_QUIT");
+        P.conn!.off("UPDATE_TURN");
+      };
+    }
   }, [P.board, hasQuit]);
 
   // BUG Somehow a value of "151" will turn into "15" and become a potentially valid
   // This gets called inside InputCell
   const handleTurn = (index: number, value: number) => {
-    console.log(isTurn);
+    if (P.conn) {
+      console.log(isTurn);
 
-    //initialize variables
-    // const turnArr = P.board.turnArr, len = turnArr.length;
-    const testInput = GameFuncs.testInput(index, gameState.values, n, value);
-    const canTurn = P.isPlayer === isTurn;
-    let newErrors: GameErrors = { types: [], cells: [] };
+      //initialize variables
+      // const turnArr = P.board.turnArr, len = turnArr.length;
+      const testInput = GameFuncs.testInput(index, gameState.values, n, value);
+      const canTurn = P.isPlayer === isTurn;
+      let newErrors: GameErrors = { types: [], cells: [] };
 
-    //Make sure input is valid
-    if (testInput === true && canTurn && value > 0 && value <= n * n) {
-      const newTurn: Turn = {
-        gameID: P.board._id,
-        player: P.isPlayer,
-        index: index,
-        value: value,
-      };
+      //Make sure input is valid
+      if (testInput === true && canTurn && value > 0 && value <= n * n) {
+        const newTurn: Turn = {
+          gameID: P.board._id,
+          player: P.isPlayer,
+          index: index,
+          value: value,
+        };
 
-      //Send new turn
-      P.conn.emit("ADD_TURN", newTurn);
-    }
+        //Send new turn
+        P.conn.emit("ADD_TURN", newTurn);
+      }
 
-    // Handle Errors
-    if (typeof testInput !== "boolean" && value !== 0) {
-      newErrors = {
-        types: [...newErrors.types, "BAD_INPUT"],
-        cells: testInput,
-      };
-    }
-    if (!canTurn) {
-      newErrors.types.push("NOT_TURN");
-    }
-    if (value < 1) {
-      newErrors.types.push("ZERO_NUM");
-    }
-    if (value > n * n) {
-      newErrors.types.push("BIG_NUM");
-    }
-    setErrors(newErrors);
+      // Handle Errors
+      if (typeof testInput !== "boolean" && value !== 0) {
+        newErrors = {
+          types: [...newErrors.types, "BAD_INPUT"],
+          cells: testInput,
+        };
+      }
+      if (!canTurn) {
+        newErrors.types.push("NOT_TURN");
+      }
+      if (value < 1) {
+        newErrors.types.push("ZERO_NUM");
+      }
+      if (value > n * n) {
+        newErrors.types.push("BIG_NUM");
+      }
+      setErrors(newErrors);
 
-    // This was trying to fix something in InputCell
-    // if(newErrors.types.length > 0) {
-    //   return false;
-    // } else {
-    //   return true;
-    // }
+      // This was trying to fix something in InputCell
+      // if(newErrors.types.length > 0) {
+      //   return false;
+      // } else {
+      //   return true;
+      // }
+    }
   };
 
   return (

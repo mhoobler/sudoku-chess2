@@ -3,6 +3,7 @@ import path from "path";
 import http from "http";
 import parser from "body-parser";
 import dotenv from "dotenv";
+import * as Lib from "./socket/lib";
 
 import SocketHandler from "./socket";
 
@@ -42,6 +43,38 @@ if (process.env.NODE_ENV === "production") {
   dotenv.config();
 }
 
+import db from "./models";
+
+app.get("/_replays", async function (req, res) {
+  try {
+    const { uid } = req.query;
+    let boards = await db.Game.Board.find({
+      $or: [{ playerCreate: uid }, { playerJoin: uid }],
+    });
+
+    res.send({
+      boards: boards.map((e: Lib.Board) => {
+        return e._id;
+      }),
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/_replay", async function (req, res) {
+  try {
+    const { _id } = req.query;
+    let board = await db.Game.Board.findOne({
+      _id: _id,
+    });
+
+    res.send({ board });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 // Send every request to the React app
 // Define any API routes before this runs
 // will be broken in development...
@@ -55,6 +88,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("*", function (req, res) {
+  console.log(req.originalUrl);
   res.json({ message: "404" });
 });
 
