@@ -1,4 +1,4 @@
-.modal-test {
+.modal-container {
   z-index: 5;
   display: flex;
   align-items: center;
@@ -15,12 +15,11 @@
   /* duration is set in component */
 }
 
-.modal-test.show {
+.modal-container.show {
   top: -10%;
-  opacity: 100%;
 }
 
-.modal-test.hide {
+.modal-container.hide {
   top: 0%;
   opacity: 0%;
 }

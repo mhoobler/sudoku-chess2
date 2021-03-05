@@ -16,9 +16,6 @@ const Home: React.FC = () => {
 
   return (
     <div className="menu-container">
-      <div className="menu-header">
-        <h1> SuGoKu </h1>
-        <Login handleModal={handleModal} />
         {display ? (
           <FadeModal timer={400} handleModal={handleModal}>
             <LoginMenu
@@ -29,6 +26,10 @@ const Home: React.FC = () => {
             />
           </FadeModal>
         ) : null}
+
+      <div className="menu-header">
+        <h1> SuGoKu </h1>
+        <Login handleModal={handleModal} />
       </div>
 
       <MenuButton action={"/create"} text={"Create Game"} />

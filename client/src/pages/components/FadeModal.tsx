@@ -25,7 +25,7 @@ const FadeModal: React.FC<Props> = (P) => {
   return (
     <div
       className={`
-      modal-test 
+      modal-container 
       ${display ? "show" : "hide"} 
       `}
       style={{
