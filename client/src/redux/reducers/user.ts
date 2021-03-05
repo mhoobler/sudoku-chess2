@@ -21,7 +21,7 @@ const initialState: IS = {
       transports: ["websocket"],
     }
   ),
-  uid: null
+  uid: null,
 };
 
 const reducer = (state = initialState, action: Action) => {
@@ -36,12 +36,12 @@ const reducer = (state = initialState, action: Action) => {
     }
 
     case "SET_UID": {
-      const {uid} = action.payload;
+      const { uid } = action.payload;
 
       return {
         ...state,
-        uid: uid
-      }
+        uid: uid,
+      };
     }
 
     default: {

@@ -21,7 +21,10 @@ class SocketHandler {
       // Initialize new Board and socket room
       socket.on(
         "NEW_GAME",
-        async (message: { size: 81 | 256, uid: string }, callback: Callback) => {
+        async (
+          message: { size: 81 | 256; uid: string },
+          callback: Callback
+        ) => {
           let board: NewBoard = {
             playerCreate: message.uid,
             size: message.size,

@@ -1,10 +1,14 @@
 :root {
-  --dark-shade: #551100;
-  --hover: #cc9988;
-  --light-shade: #996655;
-  --border-text: #000000;
+  --dark-shade: #510;
+  --hover: #c98;
+  --light-shade: #965;
+  --border-text: #000;
   --player-1: #aaf;
   --player-2: #faa;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 *,
@@ -26,8 +30,10 @@ body {
 
 a {
   color: black;
+  text-decoration: none;
 }
 
-.menu-button:hover {
+button:hover,
+a:hover {
   background-color: var(--hover);
 }

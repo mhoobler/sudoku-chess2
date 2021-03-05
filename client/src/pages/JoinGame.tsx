@@ -9,7 +9,7 @@ import { joinGame } from "../redux/actions/userActions";
 type Props = {
   conn: typeof Socket;
   joinGame: (_id: string, uid: string) => void;
-  uid: string
+  uid: string;
 };
 
 const JoinGame: React.FC<Props> = (P) => {
@@ -22,8 +22,8 @@ const JoinGame: React.FC<Props> = (P) => {
   }, [P.conn]);
 
   const handleJoin = (_id: string) => {
-    P.joinGame(_id, (P.uid ? P.uid : 'Anon'));
-  }
+    P.joinGame(_id, P.uid ? P.uid : "Anon");
+  };
 
   return (
     <div className="menu-container">
@@ -39,7 +39,7 @@ const JoinGame: React.FC<Props> = (P) => {
 const mapStateToProps = (state: any) => {
   return {
     conn: state.user.conn,
-    uid: state.user.uid
+    uid: state.user.uid,
   };
 };
 
