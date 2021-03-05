@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import ReplayGame from "../ReplayGame";
 import MenuButton from "./components/MenuButton";
@@ -11,6 +11,7 @@ const ReplayPage: React.FC = () => {
   const uid: string = useSelector((state: any) => {
     return state.user.uid;
   });
+  const dispatch = useDispatch();
   const boards = useGetGames(uid ? uid : "");
   const [selected, setSelected] = useState<Board | null>(null);
 
@@ -30,6 +31,8 @@ const ReplayPage: React.FC = () => {
     API.getReplay(_id)
       .then((res) => {
         const board: Board = res.data.board;
+        const player: number = uid === board.playerCreate ? 1 : 2;
+        dispatch({ type: "SET_PLAYER", payload: { player } });
         setSelected(board);
       })
       .catch((err) => console.log(err));
