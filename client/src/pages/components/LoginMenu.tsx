@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "firebase/auth";
 
 import MenuButton from "./MenuButton";
@@ -21,11 +21,10 @@ const LoginMenu: React.FC<Props> = (P) => {
         case "GOOGLE": {
           return new firebase.auth.GoogleAuthProvider();
         }
-        case "GITHUB": {
-          return console.warn("Github not enabled");
-        }
         default: {
-          throw new Error("Authentication Provider Error");
+          window.alert(
+            "Sorry there was an error with the authetication process"
+          );
         }
       }
     })();
@@ -36,16 +35,20 @@ const LoginMenu: React.FC<Props> = (P) => {
         .signInWithPopup(provider)
         .then((res) => {
           let uid = firebase.auth().currentUser?.uid;
-          console.log(uid);
-          console.log(res);
+
           if (uid) {
             P.signInSomeAuth(uid);
             P.handleHide();
           } else {
-            console.warn("Google Auth failed");
+            console.warn("Did not receive uid");
           }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          window.alert(
+            "Sorry there was an error with the Google provier process"
+          );
+          console.log(err);
+        })
         .finally(P.handleHide);
     }
   };
@@ -59,9 +62,6 @@ const LoginMenu: React.FC<Props> = (P) => {
       <div className="modal-body">
         <MenuButton action={() => handleLogin("GOOGLE")}>
           <span className="menu-button-icon fa fa-google"></span> Google
-        </MenuButton>
-        <MenuButton action={() => handleLogin("GITHUB")}>
-          <span className="menu-button-icon fa fa-github"></span> Github
         </MenuButton>
       </div>
     </div>
