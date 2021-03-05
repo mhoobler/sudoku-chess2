@@ -28,3 +28,10 @@ export const setTurnArr = (ta: Turn[]) => ({
     turnArr: ta,
   },
 });
+
+export const setPlayer = (player: number) => ({
+  type: "SET_PLAYER",
+  payload: {
+    player,
+  },
+});

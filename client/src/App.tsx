@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Home from "./pages/Home";
 import CreateGame from "./pages/CreateGame";
 import JoinGame from "./pages/JoinGame";
+import ReplayPage from "./pages/ReplayPage";
 import Game from "./Game";
 
 import firebase from "firebase/app";
@@ -40,6 +41,10 @@ const App: React.FC<Props> = (P) => {
       <Switch>
         <Route path="/game">
           <Game board={P.board} conn={P.conn} />
+        </Route>
+
+        <Route path="/replay">
+          <ReplayPage />
         </Route>
 
         <Route path="/create">

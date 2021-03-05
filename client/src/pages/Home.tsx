@@ -39,6 +39,8 @@ const Home: React.FC = () => {
       <MenuButton action={"/create"} text={"Create Game"} />
 
       <MenuButton action={"/join"} text={"Join Game"} />
+
+      <MenuButton action={"/replay"} text={"Replay Game"} />
     </div>
   );
 };

@@ -25,6 +25,15 @@ const reducer = (state = initialState, action: any) => {
       };
     }
 
+    case "SET_PLAYER": {
+      const { player } = action.payload;
+
+      return {
+        ...state,
+        isPlayer: player,
+      };
+    }
+
     case "SET_FOCUS": {
       const { focus } = action.payload;
       return {
