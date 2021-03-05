@@ -55,7 +55,7 @@ class SocketHandler {
       // Return selected Board by _id and join socket room
       socket.on(
         "JOIN_GAME",
-        async (message: { _id: string; uid: string }, callback: Callback) => {
+        async (message: { _id: string, uid: string }, callback: Callback) => {
           try {
             let x = await Controller({ type: "ADD_PLAYER", payload: message });
 
