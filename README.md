@@ -7,6 +7,6 @@ You can check it out at https://sudoku-chess2.herokuapp.com/
 
 ### Todo:
 
-- ✅ add persistent accounts
-- ✅ add replay feature
+- [X] add persistent accounts
+- [X] add replay feature
 - add AI opponent
